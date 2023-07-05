@@ -103,7 +103,13 @@ namespace OnlineCinemaStorageDatabase.Models
             Name = Name,
             Description = Description,
             Seasons = Seasons,
-            MySeasons = Seasons.ToDictionary(x=>x.Id,x=>(x.Name, x.Episodes.Count)),
+            MySeasons = Seasons.Select(x=>new SeasonMinViewModel()
+            {
+                id= x.Id,
+                Name= x.Name,
+                EpisodeCount = x.Episodes.Count,
+                Episodes = x.Episodes.Select(y=>(y.Id,y.Name)).ToList()
+            }).ToList(),
             TotalEpisodes = Seasons.Sum(x=>x.Episodes.Count),
             Tags = Tags
         };

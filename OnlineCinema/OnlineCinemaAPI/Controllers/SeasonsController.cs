@@ -117,9 +117,9 @@ namespace OnlineCinemaAPI.Controllers
                 {
                     Id = id
                 });
-                if (season != null && season.Stream != null)
+                if (season != null && !season.path.IsNullOrEmpty())
                 {
-                    return File(season.Stream, "application/zip", $"{season.Model.Name}.zip");
+                    return PhysicalFile(season.path, "application/zip", $"{season.Model.Name}.zip");
                 }
                 return StatusCode(500);
                 //204 = No Content 

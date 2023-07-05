@@ -5,12 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OnlineCinemaContracts.Models.FileModel
+namespace OnlineCinemaContracts.Storage
 {
-    public class SeasonFileModel
+    public interface ITagStorage
     {
-        public SeasonViewModel? Model { get; set; }
-
-        public string? path { get; set; }
+        List<TagViewModel>? GetFullList();
     }
 }

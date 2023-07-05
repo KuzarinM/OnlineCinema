@@ -127,7 +127,7 @@ namespace OnlineCinemaBusnesLogic.Logics
                 return new SeasonFileModel
                 {
                     Model = season,
-                    Stream = File.OpenRead(zipPath)
+                    path = zipPath
                 };
             }
 

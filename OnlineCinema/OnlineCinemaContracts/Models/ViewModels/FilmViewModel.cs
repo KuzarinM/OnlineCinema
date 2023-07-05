@@ -22,7 +22,6 @@ namespace OnlineCinemaContracts.Models.ViewModels
         [JsonIgnore]
         public string Path { get; set; } = string.Empty;
 
-        [JsonIgnore]
         public string Extention { get; set; } = string.Empty;
 
         [JsonIgnore]

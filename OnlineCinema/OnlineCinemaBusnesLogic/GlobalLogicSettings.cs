@@ -8,6 +8,6 @@ namespace OnlineCinemaBusnesLogic
 {
     public class GlobalLogicSettings
     {
-        public static string tmpDirPath = "E:/TMP";
+        public static string tmpDirPath = "E:/SERVICES/TMP";
     }
 }

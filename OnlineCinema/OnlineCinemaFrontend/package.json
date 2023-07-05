@@ -1,0 +1,22 @@
+{
+  "name": "onlinecinemafrontend",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite --host 192.168.1.120 ",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.0",
+    "install": "^0.13.0",
+    "jquery": "^3.7.0",
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.2",
+    "vue-search-select": "^3.1.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.2.3",
+    "vite": "^4.3.9"
+  }
+}

@@ -23,7 +23,8 @@ namespace OnlineCinemaConsileView
                     "EKT_PVR",
                     "EKT_PVR_TIMESHIFT",
                     "значки",
-                    "System Volume Information"
+                    "System Volume Information",
+                    "SERVICES"
                 },
                 whiteSeasonList = new()
                 {

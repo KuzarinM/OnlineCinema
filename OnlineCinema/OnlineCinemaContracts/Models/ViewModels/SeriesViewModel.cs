@@ -23,7 +23,7 @@ namespace OnlineCinemaContracts.Models.ViewModels
         [JsonIgnore]
         public List<ISeasonModel> Seasons { get; set; } = new();
 
-        public Dictionary<string, (string name, int episodeCount)> MySeasons { get; set; } = new();
+        public List<SeasonMinViewModel> MySeasons { get; set; } = new();
 
         public int TotalEpisodes { get; set; }
 
