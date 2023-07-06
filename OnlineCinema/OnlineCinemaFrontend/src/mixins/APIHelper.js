@@ -2,7 +2,7 @@ const APIHelper = {
     data(){
         return{
             _tokenPrefix: "Bearer ",
-            _urlPrefix: "http://192.168.1.120/api",
+            _urlPrefix: "http://192.168.1.120:10100/api",
             _urlFilePrefix:"http://192.168.1.120:10101"
         }
     },

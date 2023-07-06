@@ -19,6 +19,7 @@ import { RouterLink, RouterView } from 'vue-router'
     methods:{
       async LoadData(){
         this.tags = await this.apiRequestJson("GET",this.tagsURL)
+        this.tags = this.tags.filter(x=>this.isRole('ADMIN') || x.name != 'private')
         this.items = this.$route.query.tags
         if(this.items!=null && this.items!=""){
           this.items = this.items.filter(x=>x!="").map(x=>({value:x, text:x}))
@@ -72,7 +73,7 @@ import { RouterLink, RouterView } from 'vue-router'
                   name="tags"
                   @select="onSelect" />
                   <input class="d-none" type="number" name="page" :value="this.$route.query.page ? this.$route.query.page : 0">
-                  <button class="btn btn-outline-success my-2 my-sm-0"  type="submit">Поиск</button>
+                  <button class="btn btn-outline-success ms-1 my-2 my-sm-0"  type="submit">Поиск</button>
                 </form>
               </li>
               <div  v-if="this.isAuthtorised()" class="d-flex ">
