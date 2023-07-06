@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OnlineCinemaContracts;
+using OnlineCinemaContracts.Enums;
 using OnlineCinemaContracts.Logic;
 using OnlineCinemaContracts.Models.BindingModels;
 using OnlineCinemaContracts.Models.SearchModels;
 using OnlineCinemaContracts.Models.ViewModels;
+using System.Data;
 
 namespace OnlineCinemaAPI.Controllers
 {
@@ -82,6 +85,7 @@ namespace OnlineCinemaAPI.Controllers
         }
 
         [HttpPut]//todo WARNING Так то, по правилам REST нужно было бы и тут по id делать, но так как в BindingModel он уже есть, пусть будет вот так
+        [Authorize(Roles = "ADMIN")]
         public void UpdateSeries(SeriesBindingModel model)
         {
             if (model.Id.IsNullOrEmpty())
@@ -105,6 +109,7 @@ namespace OnlineCinemaAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "ADMIN")]
         public void DeleteSeries(string id)
         {
             _logger.LogInformation("Trying to delete a film with Id:{Id}", id);

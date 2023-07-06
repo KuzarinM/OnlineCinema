@@ -20,5 +20,9 @@ namespace OnlineCinemaContracts.Models.SearchModels
         public List<string>? HasTags { get; set; }
 
         public List<string>? WithoutTags { get; set; }
+
+        public int? Page { get; set; }
+
+        public int? Count { get; set; }
     }
 }

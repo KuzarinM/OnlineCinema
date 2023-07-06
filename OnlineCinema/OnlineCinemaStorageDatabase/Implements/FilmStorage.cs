@@ -28,7 +28,7 @@ namespace OnlineCinemaStorageDatabase.Storage
 
         public List<FilmViewModel> GetFiltredList(FilmSearchModel model)
         {
-            if (model == null || (!model.mIndex.HasValue && model.HasTags == null && model.WithoutTags == null && model.Name.IsNullOrEmpty()))
+            if (model == null || (!model.mIndex.HasValue && model.HasTags == null && model.WithoutTags == null && model.Name.IsNullOrEmpty() && (!model.Page.HasValue || !model.Count.HasValue)))
                 return new();
 
             BsonArray condition = new();
@@ -41,7 +41,14 @@ namespace OnlineCinemaStorageDatabase.Storage
             if (!model.Name.IsNullOrEmpty())
                 condition.Add(new BsonDocument("name", new BsonRegularExpression($"^{model.Name}")));
 
-            return MongoDBSingleton.Instance().Films.Find(new BsonDocument("$and",condition)).ToList().Select(x => x.GetViewModel).ToList();
+            var resout = MongoDBSingleton.Instance().Films.Find(new BsonDocument("$and", condition));
+
+            if (model.Page.HasValue)
+            {
+                resout = resout.Skip(model.Count * model.Page).Limit(model.Count);
+            }
+
+            return resout.ToList().Select(x => x.GetViewModel).ToList();
         }
 
         public FilmViewModel? GetElement(FilmSearchModel model)

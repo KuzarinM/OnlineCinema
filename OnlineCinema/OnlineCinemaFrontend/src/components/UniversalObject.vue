@@ -29,10 +29,15 @@
 				type:String
 			}
 		},
+		data(){
+			return{
+				urlI:""
+			}
+		},
 		computed:{
 			cssVars(){
 				return{
-					'--image-url' : 'url("'+this.imageURL+'")',
+					'--image-url' : 'url("'+this.urlI+'")',
 				}
 			}
 		},
@@ -45,6 +50,9 @@
 					this.$emit("click")
 				}
 			}
+		},
+		async mounted(){
+			this.urlI= await this.imageURL
 		}
 	}
 </script>

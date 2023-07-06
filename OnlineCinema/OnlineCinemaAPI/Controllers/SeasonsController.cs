@@ -108,7 +108,7 @@ namespace OnlineCinemaAPI.Controllers
         }
 
         [HttpGet("{id}/download")]
-        public async Task<ActionResult> DownloadSeason(string id)
+        public async Task<string?> DownloadSeason(string id)
         {
             _logger.LogInformation("Trying to download a season by Id:{Id}", id);
             try
@@ -119,15 +119,17 @@ namespace OnlineCinemaAPI.Controllers
                 });
                 if (season != null && !season.path.IsNullOrEmpty())
                 {
-                    return PhysicalFile(season.path, "application/zip", $"{season.Model.Name}.zip");
+                    return season.path;
                 }
-                return StatusCode(500);
+                Response.StatusCode = 500;
+                return null;
                 //204 = No Content 
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error in getting a episode by Id");
-                return StatusCode(500);
+                Response.StatusCode = 500;
+                return null;
             }
         }
     }

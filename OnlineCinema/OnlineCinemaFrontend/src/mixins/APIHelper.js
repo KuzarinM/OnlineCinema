@@ -2,7 +2,8 @@ const APIHelper = {
     data(){
         return{
             _tokenPrefix: "Bearer ",
-            _urlPrefix: "http://192.168.1.120/api"
+            _urlPrefix: "http://192.168.1.120/api",
+            _urlFilePrefix:"http://192.168.1.120:10101"
         }
     },
     methods:{
@@ -12,7 +13,7 @@ const APIHelper = {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                    //"Authorization":`${this._tokenPrefix}${sessionStorage.getItem("token")}`
+                    "Authorization":`${this._tokenPrefix}${sessionStorage.getItem("token")}`
                     }
             })
         },
@@ -22,7 +23,7 @@ const APIHelper = {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                    //"Authorization":`${this._tokenPrefix}${sessionStorage.getItem("token")}`
+                    "Authorization":`${this._tokenPrefix}${sessionStorage.getItem("token")}`
                     },
                 body:JSON.stringify(data)
             })

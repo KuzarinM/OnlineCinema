@@ -31,6 +31,7 @@ namespace OnlineCinemaStorageDatabase
         public IMongoCollection<Series> Series;
         public IMongoCollection<Season> Seasons;
         public IMongoCollection<Episode> Episodes;
+        public IMongoCollection<User> Users;
 
         public MongoDBSingleton()
         {
@@ -40,6 +41,7 @@ namespace OnlineCinemaStorageDatabase
             Series = client.GetDatabase("OnlineCinema").GetCollection<Series>("Series");
             Seasons = client.GetDatabase("OnlineCinema").GetCollection<Season>("Seasons");
             Episodes = client.GetDatabase("OnlineCinema").GetCollection<Episode>("Episodes");
+            Users = client.GetDatabase("OnlineCinema").GetCollection<User>("Users");
         }
     }
 }

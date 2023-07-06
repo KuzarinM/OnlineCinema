@@ -4,6 +4,13 @@ header{
   border-width: 0px 2px 3px 2px;
 }
 
+footer{
+  border-style: solid;
+  border-radius: 8px 8px 0px 0px;
+  border-width: 3px 2px 0px 2px;
+  height: 100px;
+}
+
 a,
 .green {
   text-decoration: none;

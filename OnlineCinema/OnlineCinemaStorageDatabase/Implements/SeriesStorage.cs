@@ -26,7 +26,7 @@ namespace OnlineCinemaStorageDatabase.Implements
 
         public List<SeriesViewModel> GetFiltredList(SeriesSearchModel model)
         {
-            if (model == null || (!model.mIndex.HasValue && model.HasTags == null && model.WithoutTags == null))
+            if (model == null || (!model.mIndex.HasValue && model.HasTags == null && model.WithoutTags == null && (!model.Page.HasValue || !model.Count.HasValue)))
                 return new();
 
             BsonArray condition = new();
@@ -39,7 +39,13 @@ namespace OnlineCinemaStorageDatabase.Implements
             if (!model.Name.IsNullOrEmpty())
                 condition.Add(new BsonDocument("name", new BsonRegularExpression($"^{model.Name}")));
 
-            return MongoDBSingleton.Instance().Series.Find(new BsonDocument("$and",condition)).ToList().Select(x => x.GetViewModel).ToList();
+            var resout = MongoDBSingleton.Instance().Series.Find(new BsonDocument("$and", condition));
+
+            if (model.Page.HasValue)
+            {
+                resout = resout.Skip(model.Count * model.Page).Limit(model.Count);
+            }
+            return resout.ToList().Select(x => x.GetViewModel).ToList();
         }
 
         public SeriesViewModel? GetElement(SeriesSearchModel model)

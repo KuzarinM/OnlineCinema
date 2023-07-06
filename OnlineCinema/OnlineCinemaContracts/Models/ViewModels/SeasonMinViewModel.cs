@@ -14,6 +14,6 @@ namespace OnlineCinemaContracts.Models.ViewModels
 
         public int EpisodeCount { get; set; }
 
-        public List<(string id, string name)> Episodes { get; set; } = new();
+        public List<(string id, string name, string path)> Episodes { get; set; } = new();
     }
 }

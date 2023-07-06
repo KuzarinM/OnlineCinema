@@ -5,6 +5,7 @@ using OnlineCinemaContracts.Models.BindingModels;
 using OnlineCinemaContracts.Models.SearchModels;
 using OnlineCinemaContracts.Models.ViewModels;
 using OnlineCinemaContracts;
+using OnlineCinemaContracts.Models.FileModel;
 
 namespace OnlineCinemaAPI.Controllers
 {
@@ -107,30 +108,22 @@ namespace OnlineCinemaAPI.Controllers
         }
 
         [HttpGet("{id}/download")]
-        public ActionResult DownloadEpisode(string id)
+        public async Task<EpisodeFileModel?> DownloadEpisode(string id)
         {
             _logger.LogInformation("Trying to download a episode by Id:{Id}", id);
             try
             {
-                var episode = _logic.GetFile(new EpisodeSearchModel
+                return await _logic.GetFile(new EpisodeSearchModel
                 {
                     Id = id
                 });
-                if (episode != null && episode.Stream != null)
-                {
-                    string? contentType;
-                    new FileExtensionContentTypeProvider().TryGetContentType(Path.GetFileName(episode.Model.Path), out contentType);
-                    if (contentType.IsNullOrEmpty())
-                        return StatusCode(500);
-                    return File(episode.Stream, contentType, Path.GetFileName(episode.Model.Path));
-                }
-                return StatusCode(500);
                 //204 = No Content 
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error in getting a episode by Id");
-                return StatusCode(500);
+                Response.StatusCode = 500;
+                return null;
             }
         }
     }

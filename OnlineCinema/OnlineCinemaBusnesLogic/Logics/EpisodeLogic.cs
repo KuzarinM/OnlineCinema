@@ -9,8 +9,10 @@ using OnlineCinemaContracts.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
+using Xabe.FFmpeg;
 
 namespace OnlineCinemaBusnesLogic.Logics
 {
@@ -99,7 +101,7 @@ namespace OnlineCinemaBusnesLogic.Logics
             return true;
         }
 
-        public EpisodeFileModel? GetFile(EpisodeSearchModel model)
+        public async Task<EpisodeFileModel?> GetFile(EpisodeSearchModel model)
         {
             _logger.LogInformation("GetFile.");
 
@@ -107,17 +109,36 @@ namespace OnlineCinemaBusnesLogic.Logics
 
             if (film != null)
             {
-                _logger.LogInformation("Episode found. Starting stream");
+                if(Path.GetExtension(film.Path) != ".mp4")
+                {
+                    string output = Path.Combine(GlobalLogicSettings.tmpDirPath, "CinemaCash",$"{film.Id}.mp4");
+
+                    if (!File.Exists(output))
+                    {
+                        FFmpeg.SetExecutablesPath("C:\\Program Files\\FFmpeg\\bin");
+
+                        var mediaInfo = await FFmpeg.GetMediaInfo(film.Path);
+
+                        var a = await FFmpeg.Conversions.New().AddStream(mediaInfo.Streams).SetOutput(output).SetOutputFormat(Format.mp4).Start();
+                    }
+
+                    return new EpisodeFileModel
+                    {
+                        Model = film,
+                        Path = output
+                    };
+                }
+
                 return new EpisodeFileModel
                 {
                     Model = film,
-                    Stream = new FileStream(film.Path, FileMode.Open)
+                    Path = film.Path
                 };
             }
             _logger.LogWarning("Episode not found.");
             return null;
         }
-
+ 
         private void CheckModel(EpisodeBindingModel model)
         {
             if (model == null)

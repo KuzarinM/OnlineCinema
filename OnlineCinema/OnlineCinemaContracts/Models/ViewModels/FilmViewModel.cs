@@ -19,7 +19,6 @@ namespace OnlineCinemaContracts.Models.ViewModels
 
         public string PakageName { get; set; } = string.Empty;
 
-        [JsonIgnore]
         public string Path { get; set; } = string.Empty;
 
         public string Extention { get; set; } = string.Empty;

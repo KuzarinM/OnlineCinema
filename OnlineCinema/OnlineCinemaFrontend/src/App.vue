@@ -66,22 +66,41 @@ import { RouterLink, RouterView } from 'vue-router'
               <li class="nav-item w-100">
                 <form class="d-flex flex-column flex-md-row my-2 my-lg-0">
                   <input class="form-control me-sm-2" name="search" type="text" :value="this.$route.query.search" >
-                  <select id="tags" class="d-none" name="tags" multiple>
-                  </select>
+                  <select id="tags" class="d-none" name="tags" multiple></select>
                   <MultiSelect :options = "this.tags.map(x=>({value:x.name, text:x.name}))" 
                   :selectedOptions="items"
                   name="tags"
                   @select="onSelect" />
+                  <input class="d-none" type="number" name="page" :value="this.$route.query.page ? this.$route.query.page : 0">
                   <button class="btn btn-outline-success my-2 my-sm-0"  type="submit">Поиск</button>
                 </form>
               </li>
+              <div  v-if="this.isAuthtorised()" class="d-flex ">
+                <li class="nav-item">
+                  <a class="nav-link active" @click="this.logout()">Выйти</a>
+                </li>
+                <li v-if="this.isRole('ADMIN')" class="nav-item">
+                  <a class="nav-link active" href="/register">Создать</a>
+                </li>
+                <li v-if="this.isRole('ADMIN')" class="nav-item">
+                  <a class="nav-link active" href="/controls">Админская</a>
+                </li>
+
+              </div>
+              <div v-else>
+                <li  class="nav-item">
+                  <a class="nav-link active" href="/login">Войти</a>
+                </li>
+              </div>
             </ul>
           </div>
         </nav>
     </div>
   </header>
-
   <RouterView />
+  <footer class="d-flex flex-column mt-3">
+    <p class="text-center mt-auto">Онлайн кинотеатр 2023</p>
+  </footer>
 </template>
 
 <style scoped>

@@ -108,7 +108,7 @@ namespace OnlineCinemaStorageDatabase.Models
                 id= x.Id,
                 Name= x.Name,
                 EpisodeCount = x.Episodes.Count,
-                Episodes = x.Episodes.Select(y=>(y.Id,y.Name)).ToList()
+                Episodes = x.Episodes.Select(y=>(y.Id,y.Name, y.Path    )).ToList()
             }).ToList(),
             TotalEpisodes = Seasons.Sum(x=>x.Episodes.Count),
             Tags = Tags

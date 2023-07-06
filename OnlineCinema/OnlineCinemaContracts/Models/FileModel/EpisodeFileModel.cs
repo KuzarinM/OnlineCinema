@@ -11,6 +11,6 @@ namespace OnlineCinemaContracts.Models.FileModel
     {
         public EpisodeViewModel? Model { get; set; }
 
-        public FileStream? Stream { get; set; }
+        public string? Path { get; set; }
     }
 }

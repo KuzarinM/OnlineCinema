@@ -6,12 +6,12 @@ namespace OnlineCinemaAPI.Controllers
     [ApiController]
     public class ImageController : Controller
     {
-        private readonly string bazePath = "E:\\SERVICES\\Картинки\\";
+        private readonly string bazePath = "E:/SERVICES/Картинки/";
 
         [HttpGet("object/{name}")]
-        public IActionResult GetObj(string name)
+        public string GetObj(string name)
         {
-            string[] options = Directory.GetFiles($"{bazePath}/Плитки", $"{name}.*");
+            string[] options = Directory.GetFiles($"{bazePath}Плитки/", $"{name}.*");
             string filename;
             if (options.Length > 0)
             {
@@ -21,13 +21,13 @@ namespace OnlineCinemaAPI.Controllers
             {
                 filename = $"{bazePath}/default.png";
             }
-            return File(System.IO.File.OpenRead(filename), $"image/{Path.GetExtension(filename).Substring(1)}");
+            return filename;
         }
 
         [HttpGet("background/{name}")]
-        public IActionResult GetBackg(string name)
+        public string GetBackg(string name)
         {
-            string[] options = Directory.GetFiles($"{bazePath}/Фоны", $"{name}.*");
+            string[] options = Directory.GetFiles($"{bazePath}Фоны/", $"{name}.*");
             string filename;
             if (options.Length > 0)
             {
@@ -37,7 +37,7 @@ namespace OnlineCinemaAPI.Controllers
             {
                 filename = $"{bazePath}/default.png";
             }
-            return File(System.IO.File.OpenRead(filename), $"image/{Path.GetExtension(filename).Substring(1)}");
+            return filename;
         }
     }
 }

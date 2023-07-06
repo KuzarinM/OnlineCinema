@@ -22,6 +22,6 @@ namespace OnlineCinemaContracts.Logic
 
         bool Delete(FilmSearchModel model);
 
-        FilmFileModel? GetFile(FilmSearchModel model);
+        Task<FilmFileModel?> GetFile(FilmSearchModel model);
     }
 }
