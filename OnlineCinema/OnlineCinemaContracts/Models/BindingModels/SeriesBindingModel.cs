@@ -1,4 +1,5 @@
-﻿using OnlineCinemaContracts.Enums;
+﻿using Newtonsoft.Json;
+using OnlineCinemaContracts.Enums;
 using OnlineCinemaContracts.Models.Interfases;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,14 @@ namespace OnlineCinemaContracts.Models.BindingModels
 
         public string? Description { get; set; }
 
+        [JsonIgnore]
         public string Path { get; set; } = string.Empty;
+
+        [JsonIgnore]
+        public string? PosterPath { get; set; }
+
+        [JsonIgnore]
+        public string? BackgroundPath { get; set; }
 
         public List<ISeasonModel> Seasons { get; set; } = new();
 

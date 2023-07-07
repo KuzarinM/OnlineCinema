@@ -45,6 +45,14 @@ namespace OnlineCinemaStorageDatabase.Models
         [BsonElement("path")]
         public string Path { get; set; } = string.Empty;
 
+        [BsonIgnoreIfNull]
+        [BsonElement("posterPath")]
+        public string? PosterPath { get; set; }
+
+        [BsonIgnoreIfNull]
+        [BsonElement("backgroundPath")]
+        public string? BackgroundPath { get; set; }
+
         [BsonElement("extention")]
         public string Extention { get; set; } = string.Empty;
 
@@ -66,6 +74,8 @@ namespace OnlineCinemaStorageDatabase.Models
                 Extention = model.Extention,
                 mIndex = model.mIndex,
                 Tags = model.Tags,
+                PosterPath= model.PosterPath,
+                BackgroundPath= model.BackgroundPath,
             };
         }
 
@@ -75,6 +85,8 @@ namespace OnlineCinemaStorageDatabase.Models
             if(!string.IsNullOrEmpty(model.Description)) Description = model.Description;
             if(!string.IsNullOrEmpty(model.PakageName)) PakageName = model.PakageName;
             if(!string.IsNullOrEmpty(model.Path)) Path = model.Path;
+            if(!string.IsNullOrEmpty(model.PosterPath)) PosterPath = model.PosterPath;
+            if(!string.IsNullOrEmpty(model.BackgroundPath)) BackgroundPath = model.BackgroundPath;
             if(!string.IsNullOrEmpty(model.Extention)) Extention = model.Extention;
             if(model.mIndex!=ElementStatus.None) mIndex = model.mIndex;
             if(Tags!=null) Tags = model.Tags;
@@ -87,6 +99,8 @@ namespace OnlineCinemaStorageDatabase.Models
             Description = Description,
             PakageName = PakageName,
             Path = Path,
+            PosterPath = PosterPath,
+            BackgroundPath = BackgroundPath,
             Extention = Extention,
             mIndex = mIndex,
             Tags = Tags

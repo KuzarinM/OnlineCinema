@@ -43,6 +43,14 @@ namespace OnlineCinemaStorageDatabase.Models
         [BsonElement("path")]
         public string Path { get; set; } = string.Empty;
 
+        [BsonIgnoreIfNull]
+        [BsonElement("posterPath")]
+        public string? PosterPath { get; set; }
+
+        [BsonIgnoreIfNull]
+        [BsonElement("backgroundPath")]
+        public string? BackgroundPath { get; set; }
+
         [BsonElement("seasons")]
         public List<ObjectId> MySeasons { get; set; } = new();
 
@@ -78,7 +86,9 @@ namespace OnlineCinemaStorageDatabase.Models
                 Path = model.Path,
                 mIndex = model.mIndex,
                 Tags = model.Tags,
-                MySeasons = model.Seasons.Select(x=>ObjectId.Parse(x.Id)).ToList()
+                MySeasons = model.Seasons.Select(x=>ObjectId.Parse(x.Id)).ToList(),
+                PosterPath= model.PosterPath,
+                BackgroundPath= model.BackgroundPath,
             };
         }
 
@@ -87,6 +97,8 @@ namespace OnlineCinemaStorageDatabase.Models
             if (!model.Name.IsNullOrEmpty()) Name= model.Name;
             if (!model.Description.IsNullOrEmpty()) Description = model.Description;
             if (!model.Path.IsNullOrEmpty()) Path= model.Path;
+            if (!model.PosterPath.IsNullOrEmpty()) PosterPath= model.PosterPath;
+            if (!model.BackgroundPath.IsNullOrEmpty()) BackgroundPath= model.BackgroundPath;
             if (model.mIndex != ElementStatus.None) mIndex = model.mIndex;
             if (model.Tags != null && model.Tags.Count > 0) Tags = model.Tags;
             if (model.Seasons!=null && model.Seasons.Count > 0)
@@ -111,7 +123,9 @@ namespace OnlineCinemaStorageDatabase.Models
                 Episodes = x.Episodes.Select(y=>(y.Id,y.Name, y.Path    )).ToList()
             }).ToList(),
             TotalEpisodes = Seasons.Sum(x=>x.Episodes.Count),
-            Tags = Tags
+            Tags = Tags,
+            PosterPath= PosterPath,
+            BackgroundPath= BackgroundPath,
         };
     }
 }

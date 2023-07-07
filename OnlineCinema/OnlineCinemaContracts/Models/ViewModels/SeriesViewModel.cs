@@ -20,6 +20,10 @@ namespace OnlineCinemaContracts.Models.ViewModels
         [JsonIgnore]
         public string Path { get; set; } = string.Empty;
 
+        public string? PosterPath { get; set; }
+
+        public string? BackgroundPath { get; set; }
+
         [JsonIgnore]
         public List<ISeasonModel> Seasons { get; set; } = new();
 

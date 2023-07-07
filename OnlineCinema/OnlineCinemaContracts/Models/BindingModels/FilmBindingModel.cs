@@ -22,6 +22,12 @@ namespace OnlineCinemaContracts.Models.BindingModels
         [JsonIgnore]
         public string Path { get; set; } = string.Empty;
 
+        [JsonIgnore]
+        public string? PosterPath { get; set; }
+
+        [JsonIgnore]
+        public string? BackgroundPath { get; set; }
+
         public string Extention { get; set; } = string.Empty;
 
         [JsonIgnore]

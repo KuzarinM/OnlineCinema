@@ -21,6 +21,10 @@ namespace OnlineCinemaContracts.Models.ViewModels
 
         public string Path { get; set; } = string.Empty;
 
+        public string? PosterPath { get; set; }
+
+        public string? BackgroundPath { get; set; }
+
         public string Extention { get; set; } = string.Empty;
 
         [JsonIgnore]

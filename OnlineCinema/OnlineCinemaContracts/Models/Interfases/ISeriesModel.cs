@@ -15,6 +15,10 @@ namespace OnlineCinemaContracts.Models.Interfases
 
         public string Path { get; }
 
+        public string? PosterPath { get; }
+
+        public string? BackgroundPath { get; }
+
         public List<ISeasonModel> Seasons { get; }
 
         public ElementStatus mIndex { get; }

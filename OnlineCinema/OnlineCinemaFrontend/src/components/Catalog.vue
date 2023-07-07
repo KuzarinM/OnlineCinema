@@ -74,7 +74,7 @@
 <template>
 	<article class="d-flex flex-column">
 		<div class="d-flex flex-wrap justify-content-center">
-			<UniversalObject :myObject = item :imageURL = "this.getImage(item)"
+			<UniversalObject :myObject = item :imageURL = "`${this._urlFilePrefix}/${item.posterPath}`"
 			:openObjectUrl = "this.IsFilm ? '/film/' : '/series/'"
 			 v-for="item in this.objects" />
 		</div>

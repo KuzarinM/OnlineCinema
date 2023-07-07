@@ -10,6 +10,12 @@ namespace OnlineCinemaContracts.Models.SettingsModel
     {
         public string drivePath = string.Empty;
 
+        public string posterDir = "E:/SERVICES/Картинки/Плитки";
+
+        public string bacgroundDir = "E:/SERVICES/Картинки/Фоны";
+
+        public string defaultImg = "E:/SERVICES/Картинки/default.png";
+
         public  List<string> blackFolderList = new();
 
         public List<string> whiteSeasonList = new();

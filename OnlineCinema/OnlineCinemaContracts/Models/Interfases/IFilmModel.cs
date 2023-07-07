@@ -15,6 +15,10 @@ namespace OnlineCinemaContracts.Models.Interfases
 
         public string PakageName { get; }
 
+        public string? PosterPath { get; }
+
+        public string? BackgroundPath { get; }
+
         public string Path { get; }
 
         public string Extention { get; }

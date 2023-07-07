@@ -11,8 +11,6 @@
 				url:"/films",
 				myObject: {},
 				tagsURL:"/tags",
-				backIurl:"",
-				smalIurl:"",
 				tags:[],
 				items:[]
 			}
@@ -20,7 +18,7 @@
 		computed:{
 			cssVars(){
 				return{
-					'--image-url' : 'url("'+`${this._urlFilePrefix}/${this.backIurl}`+'")',
+					'--image-url' : 'url("'+`${this._urlFilePrefix}/${this.myObject.backgroundPath}`+'")',
 				}
 			}
 		},
@@ -28,6 +26,9 @@
 			async LoadData(){
 				var myId = this.$route.params.id;
 				this.myObject = await this.apiRequestJson("GET", `${this.url}/${myId}`)
+
+				this.myObject.posterPath = this.myObject.posterPath.replaceAll('\\','/')
+				this.myObject.backgroundPath = this.myObject.backgroundPath.replaceAll('\\','/')
 
 				this.tags = await this.apiRequestJson("GET",this.tagsURL)
 				this.items = this.myObject.tags
@@ -37,9 +38,7 @@
 				else{
 					this.items = []
 				}
-
-				this.backIurl = await this.apiRequestJson("GET",`/image/background/${this.myObject.name}`)
-				this.smalIurl = await this.apiRequestJson("GET",`/image/object/${this.myObject.name}`)
+				console.log(this.myObject)
 			},
 			onSelect (items, lastSelectItem) {
 				this.items = items
@@ -80,13 +79,13 @@
 </script>
 
 <template>
-	<article class="d-flex flex-column justify-content-center" :style="cssVars">
+	<article v-if="this.myObject!=null" class="d-flex flex-column justify-content-center" :style="cssVars">
 		<div class="imgHeader">
 		</div>
 		<h1 class="text-center"> {{ this.myObject.name }}</h1>
 		<div class="d-flex flex-column flex-md-row justify-content-center align-items-start"><!--Контейнер для страницы-->
 			<div class="d-flex flex-column me-2 w-md-30 p-0">
-				<img class="panel w-100 m-0 p-0" :src="`${this._urlFilePrefix}/${this.smalIurl}`" ><!--Большая картинка справа-->
+				<img class="panel w-100 m-0 p-0" :src="`${this._urlFilePrefix}/${this.myObject.posterPath}`" ><!--Большая картинка справа-->
 			</div>
 			<div class="d-flex flex-column">
 				<div class="d-flex flex-column panel" ><!--Информационная панель(раньше не было)-->

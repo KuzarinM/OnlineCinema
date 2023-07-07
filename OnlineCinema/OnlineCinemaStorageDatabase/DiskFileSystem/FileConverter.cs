@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using OnlineCinemaContracts;
 using OnlineCinemaContracts.Enums;
 using OnlineCinemaContracts.Models.Interfases;
 using OnlineCinemaContracts.Models.SettingsModel;
@@ -11,6 +12,7 @@ using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace OnlineCinemaStorageDatabase.DiskFileSystem
 {
@@ -36,12 +38,12 @@ namespace OnlineCinemaStorageDatabase.DiskFileSystem
                     List<Film> tmp = IsFilm(item, model);
                     if (tmp.Count > 0)
                     {
-                        tmp.ForEach(x => AddFilm(x));
+                        tmp.ForEach(x => AddFilm(x, model));
                     }
                     Series? data = IsSeries(item, model);
                     if (data != null)
                     {
-                        AddSeries(data);
+                        AddSeries(data, model);
                         continue;
                     }
 
@@ -54,7 +56,7 @@ namespace OnlineCinemaStorageDatabase.DiskFileSystem
             }
         }
 
-        private void AddFilm(Film newfilm)
+        private void AddFilm(Film newfilm, FileSystemDiskModel model)
         {
             Film film = MongoDBSingleton.Instance().Films.Find(new BsonDocument("name", newfilm.Name)).FirstOrDefault();
             if (film == null)
@@ -75,13 +77,25 @@ namespace OnlineCinemaStorageDatabase.DiskFileSystem
                     flag = true;
                     film.Extention = newfilm.Extention;
                 }
+                string defaultPath = Directory.GetFiles(model.posterDir, $"{film.Name}.*").FirstOrDefault(model.defaultImg);
+                if (film.PosterPath.IsNullOrEmpty() || film.PosterPath != defaultPath) 
+                {
+                    flag = true;
+                    film.PosterPath = defaultPath;
+                }
+                defaultPath = Directory.GetFiles(model.bacgroundDir, $"{film.Name}.*").FirstOrDefault(model.defaultImg);
+                if (film.BackgroundPath.IsNullOrEmpty() ||  film.BackgroundPath != defaultPath)
+                {
+                    flag = true;
+                    film.BackgroundPath = defaultPath;
+                }
                 film.mIndex = flag ? ElementStatus.Updated : ElementStatus.Active;
 
                 MongoDBSingleton.Instance().Films.FindOneAndReplace(new BsonDocument("_id", film._id), film);
             }
         }
 
-        private void AddSeries(Series newSeries) 
+        private void AddSeries(Series newSeries, FileSystemDiskModel model) 
         {
             Series series =  MongoDBSingleton.Instance().Series.Find(new BsonDocument("name", newSeries.Name)).FirstOrDefault();
             if (series != null)
@@ -102,6 +116,18 @@ namespace OnlineCinemaStorageDatabase.DiskFileSystem
                     mIndex = ElementStatus.Added
                 });
                 series =  MongoDBSingleton.Instance().Series.Find(new BsonDocument("name", newSeries.Name)).FirstOrDefault();
+            }
+            string defaultPath = Directory.GetFiles(model.posterDir, $"{series.Name}.*").FirstOrDefault(model.defaultImg);
+            if (series.PosterPath.IsNullOrEmpty() || series.PosterPath != defaultPath)
+            {
+                series.mIndex = ElementStatus.Updated;
+                series.PosterPath = defaultPath;
+            }
+            defaultPath = Directory.GetFiles(model.bacgroundDir, $"{series.Name}.*").FirstOrDefault(model.defaultImg);
+            if (series.BackgroundPath.IsNullOrEmpty() || series.BackgroundPath != defaultPath)
+            {
+                series.mIndex = ElementStatus.Updated;
+                series.BackgroundPath = defaultPath;
             }
 
             List<ObjectId> mySeasons = new();
