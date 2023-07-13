@@ -1,4 +1,5 @@
-﻿using OnlineCinemaContracts.Models.SettingsModel;
+﻿using OnlineCinemaContracts.Models.FileModel;
+using OnlineCinemaContracts.Models.SettingsModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,10 @@ namespace OnlineCinemaContracts.Logic
 {
     public interface IServiceLogic
     {
-        void LoadData(FileSystemDiskModel model);
+        void LoadData(FileSystemSingletoneModel model);
 
         void TruncateTMPFolder();
+
+        List<FileViewModel> GetTMPFolderData();
     }
 }

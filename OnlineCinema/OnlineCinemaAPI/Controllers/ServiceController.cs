@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineCinemaContracts.Logic;
+using OnlineCinemaContracts.Models.FileModel;
 using OnlineCinemaContracts.Models.SettingsModel;
 using OnlineCinemaContracts.Storage;
 
@@ -30,39 +31,62 @@ namespace OnlineCinemaAPI.Controllers
             _logger.LogInformation("Trying to synchronize to disk");
             try
             {
-                _logic.LoadData(new FileSystemDiskModel
-                {
-                    drivePath = "E:\\",
-                    blackFolderList = new()
-                    {
-                        "EKT_PVR",
-                        "EKT_PVR_TIMESHIFT",
-                        "значки",
-                        "System Volume Information",
-                        "SERVICES"
-                    },
-                    whiteSeasonList = new()
-                    {
-                        "сезон",
-                        "диск"
-                    },
-                    blackExtensionList = new()
-                    {
-                        ".7z",
-                        ".ini",
-                        ".db",
-                        ".srt"
-                    },
-                    blackPackageList = new()
-                    {
-                        "фильмы"
-                    }
-                });
+                _logic.LoadData(FileSystemSingletoneModel.Instance());
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error in synchronize to disk");
                 Response.StatusCode = 500;
+            }
+        }
+
+        [HttpGet("settings")]
+        [Authorize(Roles = "ADMIN")]
+        public FileSystemSingletoneModel? GetFileSettings()
+        {
+            _logger.LogInformation("Trying to get a File settings model" );
+            try
+            {
+                return FileSystemSingletoneModel.Instance();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in getting File settings model");
+                Response.StatusCode = 500;
+                return null;
+            }
+        }
+
+        [HttpPost("settings")]
+        [Authorize(Roles = "ADMIN")]
+        public void UpdateFileSettings(FileSystemSingletoneModel model)
+        {
+            _logger.LogInformation("Trying to update a File settings model");
+            try
+            {
+                FileSystemSingletoneModel.update(model);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in updating File settings model");
+                Response.StatusCode = 500;
+            }
+        }
+
+        [HttpGet("tmpGet")]
+        [Authorize(Roles = "ADMIN")]
+        public List<FileViewModel>? GetTMP()
+        {
+            _logger.LogInformation("Trying to get tmp folder info");
+            try
+            {
+                return _logic.GetTMPFolderData();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in getting tmp folder info");
+                Response.StatusCode = 500;
+                return null;
             }
         }
 

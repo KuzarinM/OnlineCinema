@@ -18,7 +18,7 @@ namespace OnlineCinemaStorageDatabase.DiskFileSystem
 {
     public class FileConverter : IFileConverter
     {
-        public void LoadData(FileSystemDiskModel model)
+        public void LoadData(FileSystemSingletoneModel model)
         {
             MongoDBSingleton.Instance().Films.DeleteMany(new BsonDocument("index", (int)ElementStatus.Obsolete));
             MongoDBSingleton.Instance().Films.UpdateMany(new BsonDocument(), new BsonDocument("$set", new BsonDocument("index", ElementStatus.Obsolete)));
@@ -26,7 +26,7 @@ namespace OnlineCinemaStorageDatabase.DiskFileSystem
             TreeGoing(model.drivePath, model);
         }
 
-        private void TreeGoing(string path, FileSystemDiskModel model)
+        private void TreeGoing(string path, FileSystemSingletoneModel model)
         {
             foreach (var item in Directory.EnumerateDirectories(path))
             {
@@ -56,7 +56,7 @@ namespace OnlineCinemaStorageDatabase.DiskFileSystem
             }
         }
 
-        private void AddFilm(Film newfilm, FileSystemDiskModel model)
+        private void AddFilm(Film newfilm, FileSystemSingletoneModel model)
         {
             Film film = MongoDBSingleton.Instance().Films.Find(new BsonDocument("name", newfilm.Name)).FirstOrDefault();
             if (film == null)
@@ -95,7 +95,7 @@ namespace OnlineCinemaStorageDatabase.DiskFileSystem
             }
         }
 
-        private void AddSeries(Series newSeries, FileSystemDiskModel model) 
+        private void AddSeries(Series newSeries, FileSystemSingletoneModel model) 
         {
             Series series =  MongoDBSingleton.Instance().Series.Find(new BsonDocument("name", newSeries.Name)).FirstOrDefault();
             if (series != null)
@@ -239,7 +239,7 @@ namespace OnlineCinemaStorageDatabase.DiskFileSystem
             }
         }
 
-        private Series? IsSeries(string path, FileSystemDiskModel model)
+        private Series? IsSeries(string path, FileSystemSingletoneModel model)
         {
             Series? result = null;
             IEnumerable<string> seasons = Directory.EnumerateDirectories(path);
@@ -279,7 +279,7 @@ namespace OnlineCinemaStorageDatabase.DiskFileSystem
             return result;
         }
 
-        private List<Film> IsFilm(string path, FileSystemDiskModel model)
+        private List<Film> IsFilm(string path, FileSystemSingletoneModel model)
         {
             List<Film> result = new();
 

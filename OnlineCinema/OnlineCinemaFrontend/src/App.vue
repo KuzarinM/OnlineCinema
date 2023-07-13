@@ -56,8 +56,8 @@ import { RouterLink, RouterView } from 'vue-router'
             <span class="navbar-toggler-icon"></span>
           </button>
 
-          <div class="collapse navbar-collapse" id="collapsibleNavId">
-            <ul class="navbar-nav me-auto mt-2 mt-lg-0 w-100">
+          <div class="collapse navbar-collapse w-100" id="collapsibleNavId">
+            <ul class="navbar-nav mt-2 mt-lg-0 w-100">
               <li class="nav-item">
                 <a class="nav-link active" href="/films">Фильмы</a>
               </li>
@@ -76,7 +76,10 @@ import { RouterLink, RouterView } from 'vue-router'
                   <button class="btn btn-outline-success ms-1 my-2 my-sm-0"  type="submit">Поиск</button>
                 </form>
               </li>
-              <div  v-if="this.isAuthtorised()" class="d-flex ">
+              <li class="nav-item">
+                <a class="nav-link active " href="/about">Информация</a>
+              </li>
+              <div v-if="this.isAuthtorised()" class="d-flex flex-column flex-md-row">
                 <li class="nav-item">
                   <a class="nav-link active" @click="this.logout()">Выйти</a>
                 </li>
@@ -86,7 +89,6 @@ import { RouterLink, RouterView } from 'vue-router'
                 <li v-if="this.isRole('ADMIN')" class="nav-item">
                   <a class="nav-link active" href="/controls">Админская</a>
                 </li>
-
               </div>
               <div v-else>
                 <li  class="nav-item">

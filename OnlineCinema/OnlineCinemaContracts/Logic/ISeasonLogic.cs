@@ -23,5 +23,7 @@ namespace OnlineCinemaContracts.Logic
         bool Delete(SeasonSearchModel model);
 
         Task<SeasonFileModel?> GetSeasonFolder(SeasonSearchModel model);
+
+        Task<SeasonFileModel?> GetConvertedSeasonFolder(SeasonSearchModel model);
     }
 }

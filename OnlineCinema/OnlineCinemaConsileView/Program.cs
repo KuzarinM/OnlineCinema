@@ -15,7 +15,7 @@ namespace OnlineCinemaConsileView
         {
             FileConverter Loader = new();
 
-            Loader.LoadData(new FileSystemDiskModel
+            Loader.LoadData(new FileSystemSingletoneModel
             {
                 drivePath = "E:\\",
                 blackFolderList = new()

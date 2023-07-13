@@ -132,5 +132,31 @@ namespace OnlineCinemaAPI.Controllers
                 return null;
             }
         }
+
+        [HttpGet("{id}/mp4/download")]
+        public async Task<string?> DownloadMP4Season(string id)
+        {
+            _logger.LogInformation("Trying to download mp4 season by Id:{Id}", id);
+            try
+            {
+                var season = await _logic.GetConvertedSeasonFolder(new SeasonSearchModel
+                {
+                    Id = id
+                });
+                if (season != null && !season.path.IsNullOrEmpty())
+                {
+                    return season.path;
+                }
+                Response.StatusCode = 500;
+                return null;
+                //204 = No Content 
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in downloading mp4 season by Id");
+                Response.StatusCode = 500;
+                return null;
+            }
+        }
     }
 }

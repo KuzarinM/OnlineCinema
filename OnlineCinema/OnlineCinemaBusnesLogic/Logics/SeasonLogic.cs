@@ -21,11 +21,13 @@ namespace OnlineCinemaBusnesLogic.Logics
     {
         private readonly ILogger _logger;
         private readonly ISeasonStorage _seasonStorage;
+        private readonly IEpisodeLogic _episodeLogic;
 
-        public SeasonLogic(ILogger<SeasonLogic> logger, ISeasonStorage seasonStorage)
+        public SeasonLogic(ILogger<SeasonLogic> logger, ISeasonStorage seasonStorage, IEpisodeLogic episodeLogic)
         {
             _logger = logger;
             _seasonStorage = seasonStorage;
+            _episodeLogic = episodeLogic;
         }
 
         public List<SeasonViewModel>? ReadList(SeasonSearchModel? model)
@@ -118,7 +120,7 @@ namespace OnlineCinemaBusnesLogic.Logics
                         {
                             foreach (var item in season.Episodes)
                             {
-                                await Task.Run(()=> { archive.CreateEntryFromFile(item.Path, $"{item.Name}.{item.Extention}"); });
+                                await Task.Run(()=> { archive.CreateEntryFromFile(item.Path, $"{item.Name}.mp4"); });
                             }
                         }
                     });
@@ -133,6 +135,46 @@ namespace OnlineCinemaBusnesLogic.Logics
 
             return null;
         } 
+
+        public async Task<SeasonFileModel?> GetConvertedSeasonFolder(SeasonSearchModel model)
+        {
+            _logger.LogInformation("GetConvertedSeasonFolder. Id:{Id}", model?.Id);
+            var season = ReadElement(model);
+
+            if (season != null)
+            {
+                string zipPath = $"{GlobalLogicSettings.tmpDirPath}/CinemaCash/{model.Id}.zip";
+
+                if (!File.Exists(zipPath))
+                {
+                    FileStream fs = File.Open(zipPath, FileMode.Create);
+                    await Task.Run(async () =>
+                    {
+                        List<string> Paths = new();
+                        using (ZipArchive archive = new ZipArchive(fs, ZipArchiveMode.Update))
+                        {
+                            foreach (var item in season.Episodes)
+                            {
+                                var episode = await _episodeLogic.GetFile(new EpisodeSearchModel()
+                                {
+                                    Id = item.Id
+                                });
+                                Paths.Add(episode.Path);
+                                await Task.Run(() => { archive.CreateEntryFromFile(episode.Path, $"{item.Name}.{item.Extention}"); });
+                            }
+                        }
+                    });
+                }
+
+                return new SeasonFileModel
+                {
+                    Model = season,
+                    path = zipPath
+                };
+            }
+
+            return null;
+        }
 
         private void CheckModel(SeasonBindingModel model)
         {

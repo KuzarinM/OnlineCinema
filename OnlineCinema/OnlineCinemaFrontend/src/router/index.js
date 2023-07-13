@@ -6,10 +6,16 @@ import Login from '../components/Login.vue'
 import Register from '../components/Register.vue'
 import Player from '../components/Player.vue'
 import AdminPanel from '../components/AdminPanel.vue'
+import Info from '../components/Info.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path:"/about",
+      name:"about",
+      component: Info,
+    },
     {
       path:"/",
       redirect:"/serieses"
@@ -22,7 +28,6 @@ const router = createRouter({
         authorized:true,
         adminOnly:true
       }
-    
     },
     {
       path:"/player/:id",

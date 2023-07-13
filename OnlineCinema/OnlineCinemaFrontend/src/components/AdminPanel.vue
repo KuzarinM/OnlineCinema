@@ -6,7 +6,8 @@
 		mixins:[APIHelper],
 		data(){
 			return{
-				url:"/service"
+				url:"/service",
+				tmpList:[]
 			}
 		},
 		methods:{
@@ -26,6 +27,9 @@
 					alert("Очищенно!")
 				}
 			},
+			async getTMPData(){
+				this.tmpList = await this.apiRequestJson("GET",`${this.url}/tmpGet`)
+			}
 		},
 		mounted(){
 			//Init component method
@@ -42,14 +46,50 @@
 				<button type="button" class="btn btn-warning" @click="syncronise">Начать синхронизацию</button>
 			</div>
 			<div class="m-3 d-flex flex-column align-items-start panel ">
-				<label class="form-label fw-bold">Очистить папку temp</label>
+				<label class="form-label fw-bold">Папка temp</label>
+				<button type="button" class="btn btn-primary m-1" data-bs-toggle="modal" data-bs-target="#modaltmpId" @click="this.getTMPData">
+					Текущее наполнение
+				</button>
 				<button type="button" class="btn btn-danger" @click="truncateTMP">Приступить к очистке</button>
 			</div>
 		</div>
 
 	</article>
+	<div class="modal fade" id="modaltmpId" tabindex="-1" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalTitleId">Наполнение tmp папки</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body p-1">
+					<div class="table-responsive">
+						<table class="table table-primary">
+							<thead>
+								<tr>
+									<th scope="col">Тип</th>
+									<th scope="col">Название</th>
+									<th scope="col">Размер</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="" v-for="item in this.tmpList">
+									<td>{{ item.type }}</td>
+									<td>{{ item.name.replaceAll("."," ").replaceAll("_"," ") }}</td>
+									<td>{{ item.size.toFixed(2) }} Мб.</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
 
 <style scoped>
 
 </style>
+
+

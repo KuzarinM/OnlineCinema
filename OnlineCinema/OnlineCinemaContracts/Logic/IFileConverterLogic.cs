@@ -9,6 +9,6 @@ namespace OnlineCinemaContracts.Logic
 {
     public interface IFileConverterLogic
     {
-        void LoadData(FileSystemDiskModel model);
+        void LoadData(FileSystemSingletoneModel model);
     }
 }

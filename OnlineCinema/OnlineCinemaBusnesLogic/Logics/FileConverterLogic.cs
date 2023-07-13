@@ -21,7 +21,7 @@ namespace OnlineCinemaBusnesLogic.Logics
             _fileConverter = fileConverter;
         }
 
-        public void LoadData(FileSystemDiskModel model)
+        public void LoadData(FileSystemSingletoneModel model)
         {
             _logger.LogInformation("Loading data from Disk.");
             _fileConverter.LoadData(model);

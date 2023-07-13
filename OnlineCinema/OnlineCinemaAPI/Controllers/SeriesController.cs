@@ -40,7 +40,7 @@ namespace OnlineCinemaAPI.Controllers
             {
                 _logger.LogError(ex, "Error in getting a list of series");
                 Response.StatusCode = 500;
-                return null;
+                throw;
             }
         }
 
@@ -60,7 +60,7 @@ namespace OnlineCinemaAPI.Controllers
             {
                 _logger.LogError(ex, "Error in getting a filtred list of series");
                 Response.StatusCode = 500;
-                return null;
+                throw;
             }
         }
 
