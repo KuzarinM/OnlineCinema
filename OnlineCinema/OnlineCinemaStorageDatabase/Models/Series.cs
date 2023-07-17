@@ -115,6 +115,7 @@ namespace OnlineCinemaStorageDatabase.Models
             Name = Name,
             Description = Description,
             Seasons = Seasons,
+            mIndex= mIndex,
             MySeasons = Seasons.Select(x=>new SeasonMinViewModel()
             {
                 id= x.Id,

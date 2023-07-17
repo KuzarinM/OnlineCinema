@@ -31,7 +31,6 @@ namespace OnlineCinemaContracts.Models.ViewModels
 
         public int TotalEpisodes { get; set; }
 
-        [JsonIgnore]
         public ElementStatus mIndex { get; set; }
 
         public List<string> Tags { get; set; } = new();

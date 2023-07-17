@@ -48,6 +48,7 @@
 					count:this.count,
 					page:page
 				})
+
 				console.log(this.objects)
 			},
 			goTo(delta){

@@ -39,7 +39,7 @@ namespace OnlineCinemaStorageDatabase.Implements
             if (!model.Name.IsNullOrEmpty())
                 condition.Add(new BsonDocument("name", new BsonRegularExpression($"^{model.Name}")));
 
-            var resout = MongoDBSingleton.Instance().Series.Find(new BsonDocument("$and", condition));
+            var resout = MongoDBSingleton.Instance().Series.Find(new BsonDocument("$and", condition)).Sort(new BsonDocument("_id",-1));
 
             if (model.Page.HasValue)
             {

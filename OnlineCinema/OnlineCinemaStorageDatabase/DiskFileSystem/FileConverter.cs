@@ -62,6 +62,12 @@ namespace OnlineCinemaStorageDatabase.DiskFileSystem
             if (film == null)
             {
                 newfilm.mIndex = ElementStatus.Added;
+
+                if (newfilm.Path.Contains("Ролики"))
+                {
+                    newfilm.Tags.Add("видео");
+                    newfilm.Tags.Add("private");
+                }
                 MongoDBSingleton.Instance().Films.InsertOne(newfilm);
             }
             else
@@ -105,6 +111,7 @@ namespace OnlineCinemaStorageDatabase.DiskFileSystem
                     series.Path = newSeries.Path;
                     series.mIndex = ElementStatus.Updated;
                 }
+
                 series.mIndex= ElementStatus.Active;
             }
             else
@@ -113,7 +120,12 @@ namespace OnlineCinemaStorageDatabase.DiskFileSystem
                 {
                     Name = newSeries.Name,
                     Path= newSeries.Path,
-                    mIndex = ElementStatus.Added
+                    mIndex = ElementStatus.Added,
+                    Tags = new()
+                    {
+                        "видео",
+                        "private"
+                    }
                 });
                 series =  MongoDBSingleton.Instance().Series.Find(new BsonDocument("name", newSeries.Name)).FirstOrDefault();
             }

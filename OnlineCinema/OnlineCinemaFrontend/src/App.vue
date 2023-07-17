@@ -1,8 +1,7 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-</script>
+
 <script>
 	import APIHelper from "./mixins/APIHelper.js";
+  import { RouterLink, RouterView } from 'vue-router'
   import $ from "jquery"; 
   import {MultiSelect} from "../node_modules/vue-search-select/dist/VueSearchSelect.js";
   
@@ -79,14 +78,14 @@ import { RouterLink, RouterView } from 'vue-router'
               <li class="nav-item">
                 <a class="nav-link active " href="/about">Информация</a>
               </li>
-              <div v-if="this.isAuthtorised()" class="d-flex flex-column flex-md-row">
+              <div v-if="isAuthtorised()" class="d-flex flex-column flex-md-row">
                 <li class="nav-item">
-                  <a class="nav-link active" @click="this.logout()">Выйти</a>
+                  <a class="nav-link active" @click="logout()">Выйти</a>
                 </li>
-                <li v-if="this.isRole('ADMIN')" class="nav-item">
+                <li v-if="isRole('ADMIN')" class="nav-item">
                   <a class="nav-link active" href="/register">Создать</a>
                 </li>
-                <li v-if="this.isRole('ADMIN')" class="nav-item">
+                <li v-if="isRole('ADMIN')" class="nav-item">
                   <a class="nav-link active" href="/controls">Админская</a>
                 </li>
               </div>

@@ -43,8 +43,9 @@
 				const line = $(`#line_${index}`)
 				line.hasClass("d-none")? line.removeClass("d-none") : line.addClass("d-none")
 			},
-			async downloadSeason(item, index, converted){
+			async downloadSeason(item, index){
 
+				var converted = $(`#download_mp4_${item.id}`).is(":checked");
 				$(`#loadPlace_${item.id}`).html(`<img src="${'http://192.168.0.102'}/src/assets/load.gif" height="40" width="40">`)
 
 				var url = `/seasons/${item.id}/${converted?"mp4/":""}download`
@@ -183,20 +184,11 @@
 							</td>
 							<td >{{item.name}}</td>
 							<td class="d-flex">
-								<a class="btn btn-success" @click="downloadSeason(item,index, false)">Скачать сезон</a>
-								<div class="form-check">
-								  <input class="form-check-input" type="checkbox" value="" id="">
-								  <label class="form-check-label" for="">
-									Default checkbox
-								  </label>
+								<a class="btn btn-success" @click="downloadSeason(item,index)">Скачать сезон</a>
+								<div class="m-1">
+									<input class="form-check-input" type="checkbox" :id="`download_mp4_${item.id}`">
+									<label class="form-check-label" for="">в .mp4</label>
 								</div>
-								<div class="form-check">
-								  <input class="form-check-input" type="checkbox" value="" id="" checked>
-								  <label class="form-check-label" for="">
-									Checked checkbox
-								  </label>
-								</div>
-								<a class="btn btn-success" @click="downloadSeason(item,index,true)">Скачать сезон(mp4) </a>
 								<div :id="`loadPlace_${item.id}`"></div>
 							</td>
 						</tr>
