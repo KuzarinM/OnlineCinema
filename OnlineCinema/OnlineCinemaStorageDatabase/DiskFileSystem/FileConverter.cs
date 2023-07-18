@@ -116,16 +116,18 @@ namespace OnlineCinemaStorageDatabase.DiskFileSystem
             }
             else
             {
+                var tags = new List<string>();
+                if (newSeries.Path.Contains("Ролики"))
+                {
+                    tags.Add("видео");
+                    tags.Add("private");
+                }
                 MongoDBSingleton.Instance().Series.InsertOne(new Series
                 {
                     Name = newSeries.Name,
                     Path= newSeries.Path,
                     mIndex = ElementStatus.Added,
-                    Tags = new()
-                    {
-                        "видео",
-                        "private"
-                    }
+                    Tags =tags
                 });
                 series =  MongoDBSingleton.Instance().Series.Find(new BsonDocument("name", newSeries.Name)).FirstOrDefault();
             }
