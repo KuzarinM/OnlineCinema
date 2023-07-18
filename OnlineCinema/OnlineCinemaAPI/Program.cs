@@ -6,6 +6,7 @@ using NLog.Extensions.Logging;
 using OnlineCinemaAPI.Sequrity;
 using OnlineCinemaBusnesLogic.Logics;
 using OnlineCinemaContracts.Logic;
+using OnlineCinemaContracts.Models.SettingsModel;
 using OnlineCinemaContracts.Storage;
 using OnlineCinemaStorageDatabase.DiskFileSystem;
 using OnlineCinemaStorageDatabase.Implements;
@@ -38,30 +39,29 @@ builder.Logging.AddNLog("nlog.config");
 #endregion Зависимости
 //
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                    .AddJwtBearer(options =>
-                    {
-                        options.RequireHttpsMetadata = false;
-                        options.TokenValidationParameters = new TokenValidationParameters
-                        {
-                            // укзывает, будет ли валидироваться издатель при валидации токена
-                            ValidateIssuer = true,
-                            // строка, представляющая издателя
-                            ValidIssuer = AuthOptions.ISSUER,
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        // укзывает, будет ли валидироваться издатель при валидации токена
+        ValidateIssuer = true,
+        // строка, представляющая издателя
+        ValidIssuer = AuthOptions.ISSUER,
 
-                            // будет ли валидироваться потребитель токена
-                            ValidateAudience = true,
-                            // установка потребителя токена
-                            ValidAudience = AuthOptions.AUDIENCE,
-                            // будет ли валидироваться время существования
-                            ValidateLifetime = true,
+        // будет ли валидироваться потребитель токена
+        ValidateAudience = true,
+        // установка потребителя токена
+        ValidAudience = AuthOptions.AUDIENCE,
+        // будет ли валидироваться время существования
+        ValidateLifetime = true,
 
-                            // установка ключа безопасности
-                            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
-                            // валидация ключа безопасности
-                            ValidateIssuerSigningKey = true,
-                        };
-                    });
+        // установка ключа безопасности
+        IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+        // валидация ключа безопасности
+        ValidateIssuerSigningKey = true,
+    };
+});
 
 
 builder.Services.AddControllers();
@@ -91,7 +91,6 @@ builder.Services.AddSwaggerGen(c =>
               Scheme = "oauth2",
               Name = "Bearer",
               In = ParameterLocation.Header,
-
             },
             new List<string>()
           }
@@ -111,6 +110,15 @@ builder.Services.AddCors(policyBuilder =>
 builder.Services.AddHttpClient();
 
 var app = builder.Build();
+
+FileSystemSingletoneModel.update(new FileSystemSingletoneModel
+{
+    drivePath = builder.Configuration?.GetSection("DrivePath")?.Value?.ToString() ?? null,
+    tmpDirPath = builder.Configuration?.GetSection("TMPPath")?.Value?.ToString() ?? null,
+    posterDir = builder.Configuration?.GetSection("PosterPath")?.Value?.ToString() ?? null,
+    bacgroundDir = builder.Configuration?.GetSection("BackgroundPath")?.Value?.ToString() ?? null,
+    defaultImg = builder.Configuration?.GetSection("DefaultImage")?.Value?.ToString() ?? null
+});
 
 app.UseCors();
 

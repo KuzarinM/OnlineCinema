@@ -4,6 +4,7 @@ using OnlineCinemaContracts.Logic;
 using OnlineCinemaContracts.Models.BindingModels;
 using OnlineCinemaContracts.Models.FileModel;
 using OnlineCinemaContracts.Models.SearchModels;
+using OnlineCinemaContracts.Models.SettingsModel;
 using OnlineCinemaContracts.Models.ViewModels;
 using OnlineCinemaContracts.Storage;
 using System;
@@ -109,7 +110,7 @@ namespace OnlineCinemaBusnesLogic.Logics
 
             if (season != null)
             {
-                string zipPath = $"{GlobalLogicSettings.tmpDirPath}/CinemaCash/{model.Id}.zip";
+                string zipPath = $"{FileSystemSingletoneModel.Instance().tmpDirPath}/{model.Id}.zip";
 
                 if (!File.Exists(zipPath))
                 {
@@ -143,7 +144,7 @@ namespace OnlineCinemaBusnesLogic.Logics
 
             if (season != null)
             {
-                string zipPath = $"{GlobalLogicSettings.tmpDirPath}/CinemaCash/{model.Id}.zip";
+                string zipPath = $"{FileSystemSingletoneModel.Instance().tmpDirPath}/{model.Id}.zip";
 
                 if (!File.Exists(zipPath))
                 {
@@ -172,7 +173,6 @@ namespace OnlineCinemaBusnesLogic.Logics
                     path = zipPath
                 };
             }
-
             return null;
         }
 

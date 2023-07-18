@@ -20,14 +20,16 @@ namespace OnlineCinemaBusnesLogic.Logics
         private readonly IEpisodeStorage _episodeStorage;
         private readonly IFilmStorage _filmStorage;
         private readonly ISeasonStorage _seasonStorage;
+        private readonly IUserLogic _userLogic;
 
-        public ServiceLogic(ILogger<ServiceLogic> logger, IFileConverter fileConverter, IEpisodeStorage episodeStorage, IFilmStorage filmStorage, ISeasonStorage seasonStorage)
+        public ServiceLogic(ILogger<ServiceLogic> logger, IFileConverter fileConverter, IEpisodeStorage episodeStorage, IFilmStorage filmStorage, ISeasonStorage seasonStorage, IUserLogic userLogic)
         {
             _logger = logger;
             _fileConverter = fileConverter;
             _episodeStorage = episodeStorage;
             _filmStorage = filmStorage;
             _seasonStorage = seasonStorage;
+            _userLogic = userLogic;
         }
 
         public void LoadData(FileSystemSingletoneModel model)
@@ -38,7 +40,7 @@ namespace OnlineCinemaBusnesLogic.Logics
 
         public void TruncateTMPFolder()
         {
-            string tmpDir = $"{GlobalLogicSettings.tmpDirPath}/CinemaCash";
+            string tmpDir = $"{FileSystemSingletoneModel.Instance().tmpDirPath}";
 
             foreach (var item in Directory.GetFiles(tmpDir))
             {
@@ -53,7 +55,7 @@ namespace OnlineCinemaBusnesLogic.Logics
         public List<FileViewModel> GetTMPFolderData()
         {
             List<FileViewModel> resout = new();
-            foreach (var item in Directory.EnumerateFiles($"{GlobalLogicSettings.tmpDirPath}\\CinemaCash", "*.mp4"))
+            foreach (var item in Directory.EnumerateFiles($"{FileSystemSingletoneModel.Instance().tmpDirPath}", "*.mp4"))
             {
                 string id = Path.GetFileNameWithoutExtension(item);
                 FileViewModel tmp = null;
@@ -89,7 +91,7 @@ namespace OnlineCinemaBusnesLogic.Logics
                 }
             }
 
-            foreach (var item in Directory.EnumerateFiles($"{GlobalLogicSettings.tmpDirPath}\\CinemaCash", "*.zip"))
+            foreach (var item in Directory.EnumerateFiles(FileSystemSingletoneModel.Instance().tmpDirPath, "*.zip"))
             {
                 string id = Path.GetFileNameWithoutExtension(item);
                 FileViewModel tmp = null;
@@ -109,6 +111,24 @@ namespace OnlineCinemaBusnesLogic.Logics
             }
 
             return resout;
+        }
+
+        public void CreateAdmin()
+        {
+            var admin = _userLogic.ReadElement(new()
+            {
+                Login = "admin",
+                Password = null
+            });
+            if(admin == null)
+            {
+                _userLogic.Create(new()
+                {
+                    Login = "admin",
+                    Password = "admin",
+                    Role = OnlineCinemaContracts.Enums.UserRole.ADMIN
+                });
+            }
         }
     }
 }

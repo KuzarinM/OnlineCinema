@@ -15,5 +15,7 @@ namespace OnlineCinemaContracts.Logic
         void TruncateTMPFolder();
 
         List<FileViewModel> GetTMPFolderData();
+
+        void CreateAdmin();
     }
 }

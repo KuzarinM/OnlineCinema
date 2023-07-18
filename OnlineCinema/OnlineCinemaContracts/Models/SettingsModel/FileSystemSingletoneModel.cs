@@ -22,6 +22,8 @@ namespace OnlineCinemaContracts.Models.SettingsModel
 
         public string drivePath = "E:\\";
 
+        public string tmpDirPath = "E:/SERVICES/TMP";
+
         public string posterDir = "E:/SERVICES/Картинки/Плитки";
 
         public string bacgroundDir = "E:/SERVICES/Картинки/Фоны";

@@ -106,5 +106,20 @@ namespace OnlineCinemaAPI.Controllers
             }
         }
 
+        [HttpGet("init")]
+        public void CreateAdmin()
+        {
+            _logger.LogInformation("Trying to create ADMIN user");
+            try
+            {
+                _logic.CreateAdmin();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in creating ADMIN user");
+                Response.StatusCode = 500;
+            }
+        }
+
     }
 }

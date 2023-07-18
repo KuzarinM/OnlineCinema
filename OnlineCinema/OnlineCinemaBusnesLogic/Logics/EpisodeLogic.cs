@@ -4,6 +4,7 @@ using OnlineCinemaContracts.Logic;
 using OnlineCinemaContracts.Models.BindingModels;
 using OnlineCinemaContracts.Models.FileModel;
 using OnlineCinemaContracts.Models.SearchModels;
+using OnlineCinemaContracts.Models.SettingsModel;
 using OnlineCinemaContracts.Models.ViewModels;
 using OnlineCinemaContracts.Storage;
 using System;
@@ -111,7 +112,7 @@ namespace OnlineCinemaBusnesLogic.Logics
             {
                 if(Path.GetExtension(film.Path) != ".mp4")
                 {
-                    string output = Path.Combine(GlobalLogicSettings.tmpDirPath, "CinemaCash",$"{film.Id}.mp4");
+                    string output = Path.Combine(FileSystemSingletoneModel.Instance().tmpDirPath,$"{film.Id}.mp4");
 
                     if (!File.Exists(output))
                     {
