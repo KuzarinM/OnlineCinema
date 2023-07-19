@@ -64,6 +64,7 @@ namespace OnlineCinemaContracts.Models.SettingsModel
             Instance();
             if (!model.drivePath.IsNullOrEmpty()) _instance.drivePath = model.drivePath;
             if (!model.posterDir.IsNullOrEmpty()) _instance.posterDir = model.posterDir;
+            if (!model.tmpDirPath.IsNullOrEmpty()) _instance.tmpDirPath = model.tmpDirPath;
             if (!model.bacgroundDir.IsNullOrEmpty()) _instance.bacgroundDir = model.bacgroundDir;
             if (!model.defaultImg.IsNullOrEmpty()) _instance.defaultImg = model.defaultImg;
             if (model.blackFolderList != null && model.blackFolderList.Count > 0) _instance.blackFolderList = model.blackFolderList;

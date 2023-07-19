@@ -18,13 +18,13 @@
     methods:{
       async LoadData(){
         this.tags = await this.apiRequestJson("GET",this.tagsURL)
-        this.tags = this.tags.filter(x=>this.isRole('ADMIN') || x.name != 'private')
-        this.items = this.$route.query.tags
-        if(this.items!=null && this.items!=""){
-          this.items = this.items.filter(x=>x!="").map(x=>({value:x, text:x}))
-        }
-        else{
-          this.items = []
+        this.items = []
+        if(this.tags!=null && this.tags.length > 0){
+          this.tags = this.tags.filter(x=>this.isRole('ADMIN') || x.name != 'private')
+          this.items = this.$route.query.tags
+          if(this.items!=null && this.items!=""){
+            this.items = this.items.filter(x=>x!="").map(x=>({value:x, text:x}))
+          }
         }
       },
       onSelect (items, lastSelectItem) {
