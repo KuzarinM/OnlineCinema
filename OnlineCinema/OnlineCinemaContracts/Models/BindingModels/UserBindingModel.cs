@@ -17,7 +17,6 @@ namespace OnlineCinemaContracts.Models.BindingModels
 
         public string Password { get; set; } = string.Empty;
 
-        [JsonIgnore]
         public UserRole Role { get; set; } = UserRole.USER;
     }
 }

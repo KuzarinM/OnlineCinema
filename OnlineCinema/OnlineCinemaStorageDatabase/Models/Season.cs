@@ -50,7 +50,7 @@ namespace OnlineCinemaStorageDatabase.Models
             {
                 if(_episodes == null)
                 {
-                    _episodes = MongoDBSingleton.Instance().Episodes.Find(new BsonDocument("_id", new BsonDocument("$in", new BsonArray(MyEpisodes))))
+                    _episodes = MongoDBSingleton.Instance().Episodes.Find(new BsonDocument("_id", new BsonDocument("$in", new BsonArray(MyEpisodes)))).Sort(new BsonDocument("name", 1))
                         .ToList().Select(x=>x.GetViewModel as IEpisodeModel).ToList();
                 }
                 return _episodes;

@@ -42,7 +42,7 @@
 				console.log(name)
 
 				this.objects = await this.apiRequestJson("POST",this.IsFilm ? this.urlFilm : this.urlSeries,{
-					withoutTags:[this.isRole("ADMIN")?"":"private"],
+					withoutTags:[this.isRole("ADMIN")?"":"private", this.isRole("USER")?"":"internal"],
 					name:name,
 					hasTags:tags,
 					count:this.count,

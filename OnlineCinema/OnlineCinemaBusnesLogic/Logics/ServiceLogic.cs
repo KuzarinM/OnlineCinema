@@ -40,7 +40,7 @@ namespace OnlineCinemaBusnesLogic.Logics
 
         public void TruncateTMPFolder()
         {
-            string tmpDir = $"{FileSystemSingletoneModel.Instance().tmpDirPath}";
+            string tmpDir = $"{FileSystemSingletoneModel.Instance().tmpDirPath}/CinemaCash";
 
             foreach (var item in Directory.GetFiles(tmpDir))
             {

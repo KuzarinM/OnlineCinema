@@ -57,6 +57,7 @@ namespace OnlineCinemaStorageDatabase.Models
         {
             if(!user.Login.IsNullOrEmpty()) Login= user.Login;
             if(!user.Password.IsNullOrEmpty()) Password= user.Password;
+            Role = user.Role;
         }
 
         public UserViewModel GetViewModel => new()

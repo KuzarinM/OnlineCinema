@@ -7,6 +7,7 @@ import Register from '../components/Register.vue'
 import Player from '../components/Player.vue'
 import AdminPanel from '../components/AdminPanel.vue'
 import Info from '../components/Info.vue'
+import UserTable from '../components/UserTable.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,6 +20,15 @@ const router = createRouter({
     {
       path:"/",
       redirect:"/serieses"
+    },
+    {
+      path:"/users",
+      name:"users",
+      component: UserTable,
+      meta:{
+        authorized:true,
+        adminOnly:true
+      }
     },
     {
       path:"/controls",

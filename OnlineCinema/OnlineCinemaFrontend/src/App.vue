@@ -20,10 +20,13 @@
         this.tags = await this.apiRequestJson("GET",this.tagsURL)
         this.items = []
         if(this.tags!=null && this.tags.length > 0){
-          this.tags = this.tags.filter(x=>this.isRole('ADMIN') || x.name != 'private')
+          this.tags = this.tags.filter(x=>!((!this.isRole('ADMIN') && x.name == 'private')||(!this.isRole("USER") && x.name=="internal")))
           this.items = this.$route.query.tags
           if(this.items!=null && this.items!=""){
             this.items = this.items.filter(x=>x!="").map(x=>({value:x, text:x}))
+          }
+          else{
+            this.items = []
           }
         }
       },
@@ -87,6 +90,9 @@
                 </li>
                 <li v-if="isRole('ADMIN')" class="nav-item">
                   <a class="nav-link active" href="/controls">Админская</a>
+                </li>
+                <li v-if="isRole('ADMIN')" class="nav-item">
+                  <a class="nav-link active" href="/users">Пользователи</a>
                 </li>
               </div>
               <div v-else>

@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -272,12 +273,14 @@ namespace OnlineCinemaStorageDatabase.DiskFileSystem
                     IEnumerable<string> episodes = Directory.EnumerateFiles(season);
                     if (episodes.Count() > 0)
                     {
+                        string sName = Path.GetFileName(season).toTwoDigits();
+
                         Season thisSeason = new()
                         {
-                            Name = $"{result.Name} {Path.GetFileName(season)}",
+                            Name = $"{result.Name} {sName}",
                             Episodes = episodes.Select(x => new Episode()
                             {
-                                Name = $"{result.Name} {Path.GetFileName(season)} {Path.GetFileNameWithoutExtension(x)}",
+                                Name = $"{result.Name} {sName} {Path.GetFileNameWithoutExtension(x).toTwoDigits()}",
                                 Path = x,
                                 Extention = Path.GetExtension(x)
                             } as IEpisodeModel).ToList()

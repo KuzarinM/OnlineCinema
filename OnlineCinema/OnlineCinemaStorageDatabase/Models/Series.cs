@@ -63,7 +63,7 @@ namespace OnlineCinemaStorageDatabase.Models
             {
                 if(_seasons == null)
                 {
-                    _seasons = MongoDBSingleton.Instance().Seasons.Find(new BsonDocument("_id", new BsonDocument("$in", new BsonArray(MySeasons)))).
+                    _seasons = MongoDBSingleton.Instance().Seasons.Find(new BsonDocument("_id", new BsonDocument("$in", new BsonArray(MySeasons)))).Sort(new BsonDocument("name",1)).
                         ToList().Select(x=>x.GetViewModel as ISeasonModel).ToList();
                 }
                 return _seasons;

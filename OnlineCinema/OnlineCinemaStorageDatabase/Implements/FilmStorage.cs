@@ -35,7 +35,7 @@ namespace OnlineCinemaStorageDatabase.Storage
             if (model.mIndex.HasValue)
                 condition.Add(new BsonDocument("index", model.mIndex.Value));
             if (model.HasTags != null)
-                condition.Add(new BsonDocument("tags", new BsonDocument("$in", new BsonArray(model.HasTags))));
+                condition.Add(new BsonDocument("tags", new BsonDocument("$all", new BsonArray(model.HasTags))));
             if (model.WithoutTags != null)
                 condition.Add(new BsonDocument("tags", new BsonDocument("$not", new BsonDocument("$in", new BsonArray(model.WithoutTags)))));
             if (!model.Name.IsNullOrEmpty())
