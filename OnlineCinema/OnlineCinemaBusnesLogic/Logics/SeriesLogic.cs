@@ -17,11 +17,15 @@ namespace OnlineCinemaBusnesLogic.Logics
     {
         private readonly ILogger _logger;
         private readonly ISeriesStorage _seriesStorage;
+        private readonly ISeasonStorage _seasonStorage;
+        private readonly IEpisodeStorage _episodeStorage;
 
-        public SeriesLogic(ILogger<SeriesLogic> logger, ISeriesStorage seriesStorage)
+        public SeriesLogic(ILogger<SeriesLogic> logger, ISeriesStorage seriesStorage, ISeasonStorage seasonStorage, IEpisodeStorage episodeStorage)
         {
             _logger = logger;
             _seriesStorage = seriesStorage;
+            _seasonStorage = seasonStorage;
+            _episodeStorage = episodeStorage;
         }
 
         public List<SeriesViewModel>? ReadList(SeriesSearchModel? model)
@@ -52,6 +56,52 @@ namespace OnlineCinemaBusnesLogic.Logics
             }
             _logger.LogInformation("ReadElement. Element find Id:{Id}", Series.Id);
             return Series;
+        }
+
+        public EpisodeViewModel? GetNextEpisode(EpisodeSearchModel? model) 
+        {
+            if (model == null) return null;
+
+            var episode = _episodeStorage.GetElement(model);
+            if (episode == null) return null;
+            var season = _seasonStorage.GetElement(new SeasonSearchModel { Id = episode.SeasonId});
+            if (season == null) return null;
+            var series = _seriesStorage.GetElement(new SeriesSearchModel { Id = season.SeriesId });
+            if (series == null) return null;
+            int index = season.Episodes.FindIndex(x=>x.Id == episode.Id);
+            if (index + 1 < season.Episodes.Count)
+            {
+                return season.Episodes[index + 1] as EpisodeViewModel;
+            }
+            index = series.Seasons.FindIndex(x => x.Id == season.Id);
+            if(index +1 < series.Seasons.Count)
+            {
+                return (series.Seasons[index + 1] as SeasonViewModel)?.Episodes[0] as EpisodeViewModel;
+            }
+            return null;
+        }
+
+        public EpisodeViewModel? GetPreveousEpisode(EpisodeSearchModel? model)
+        {
+            if (model == null) return null;
+
+            var episode = _episodeStorage.GetElement(model);
+            if (episode == null) return null;
+            var season = _seasonStorage.GetElement(new SeasonSearchModel { Id = episode.SeasonId });
+            if (season == null) return null;
+            var series = _seriesStorage.GetElement(new SeriesSearchModel { Id = season.SeriesId });
+            if (series == null) return null;
+            int index = season.Episodes.FindIndex(x => x.Id == episode.Id);
+            if (index - 1 >= 0)
+            {
+                return season.Episodes[index - 1] as EpisodeViewModel;
+            }
+            index = series.Seasons.FindIndex(x => x.Id == season.Id);
+            if (index - 1 >= 0)
+            {
+                return (series.Seasons[index - 1] as SeasonViewModel)?.Episodes[0] as EpisodeViewModel;
+            }
+            return null;
         }
 
         public bool Create(SeriesBindingModel model)

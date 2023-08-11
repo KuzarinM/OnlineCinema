@@ -12,5 +12,11 @@ namespace OnlineCinemaContracts.Models.FileModel
         public EpisodeViewModel? Model { get; set; }
 
         public string? Path { get; set; }
+
+        public EpisodeViewModel? Next { get; set; }
+
+        public bool HasNext { get; set; } = false;
+
+        public EpisodeViewModel? Preveous { get; set; }
     }
 }

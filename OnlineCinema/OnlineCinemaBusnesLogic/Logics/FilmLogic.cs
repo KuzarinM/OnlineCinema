@@ -119,7 +119,11 @@ namespace OnlineCinemaBusnesLogic.Logics
 
                         var mediaInfo = await FFmpeg.GetMediaInfo(film.Path);
 
-                        var a = await FFmpeg.Conversions.New().AddStream(mediaInfo.Streams).SetOutput(output).SetOutputFormat(Format.mp4).Start();
+                        await FFmpeg.Conversions.New().AddStream(mediaInfo.Streams)
+                            .AddParameter("-threads 16")
+                            .AddParameter("-ac 2")
+                            .AddParameter("-c:v h264_nvenc")
+                            .SetOutput(output).SetOutputFormat(Format.mp4).Start();
                     }
 
                     return new FilmFileModel

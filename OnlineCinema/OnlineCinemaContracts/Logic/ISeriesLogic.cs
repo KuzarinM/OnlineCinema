@@ -20,5 +20,9 @@ namespace OnlineCinemaContracts.Logic
         bool Update(SeriesBindingModel model);
 
         bool Delete(SeriesSearchModel model);
+
+        EpisodeViewModel? GetNextEpisode(EpisodeSearchModel? model);
+
+        EpisodeViewModel? GetPreveousEpisode(EpisodeSearchModel? model);
     }
 }

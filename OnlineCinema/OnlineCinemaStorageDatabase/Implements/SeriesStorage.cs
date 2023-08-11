@@ -63,6 +63,17 @@ namespace OnlineCinemaStorageDatabase.Implements
             return null;
         }
 
+        public SeriesViewModel? GetElement(EpisodeSearchModel model)
+        {
+            if(model == null || model.Id.IsNullOrEmpty()) return null;
+
+            var ep = MongoDBSingleton.Instance().Episodes.Find(new BsonDocument("_id", ObjectId.Parse(model.Id))).FirstOrDefault();
+            if (ep == null) return null;
+            var seas = MongoDBSingleton.Instance().Seasons.Find(new BsonDocument("_id", ObjectId.Parse(ep.SeasonId))).FirstOrDefault();
+            if (seas == null) return null;
+            return MongoDBSingleton.Instance().Series.Find(new BsonDocument("_id", ObjectId.Parse(seas.SeriesId))).FirstOrDefault()?.GetViewModel;
+        }
+
         public SeriesViewModel? Insert(SeriesBindingModel model)
         {
             if (model == null)

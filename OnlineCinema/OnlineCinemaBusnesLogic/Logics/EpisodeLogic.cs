@@ -21,11 +21,13 @@ namespace OnlineCinemaBusnesLogic.Logics
     {
         private readonly ILogger _logger;
         private readonly IEpisodeStorage _episodeStorage;
+        private readonly ISeriesLogic _seriesLogic;
 
-        public EpisodeLogic(ILogger<EpisodeLogic> logger, IEpisodeStorage episodeStorage)
+        public EpisodeLogic(ILogger<EpisodeLogic> logger, IEpisodeStorage episodeStorage, ISeriesLogic seriesLogic)
         {
             _logger = logger;
             _episodeStorage = episodeStorage;
+            _seriesLogic = seriesLogic;
         }
 
         public List<EpisodeViewModel>? ReadList(EpisodeSearchModel? model)
@@ -106,35 +108,42 @@ namespace OnlineCinemaBusnesLogic.Logics
         {
             _logger.LogInformation("GetFile.");
 
-            var film = ReadElement(model);
+            var episode = ReadElement(model);
 
-            if (film != null)
+            if (episode != null)
             {
-                if(Path.GetExtension(film.Path) != ".mp4")
+                var returnModel = new EpisodeFileModel
                 {
-                    string output = Path.Combine(FileSystemSingletoneModel.Instance().tmpDirPath,$"{film.Id}.mp4");
+                    Model = episode,
+                    Path = episode.Path,
+                    Preveous = _seriesLogic.GetPreveousEpisode(new EpisodeSearchModel { Id = episode.Id })
+                };
+
+                if (Path.GetExtension(episode.Path) != ".mp4")//Файл не в mp4 -> конвертируем
+                {
+                    string output = Path.Combine(FileSystemSingletoneModel.Instance().tmpDirPath,$"{episode.Id}.mp4");
 
                     if (!File.Exists(output))
                     {
                         FFmpeg.SetExecutablesPath("C:\\Program Files\\FFmpeg\\bin");
 
-                        var mediaInfo = await FFmpeg.GetMediaInfo(film.Path);
+                        var mediaInfo = await FFmpeg.GetMediaInfo(episode.Path);
 
-                        var a = await FFmpeg.Conversions.New().AddStream(mediaInfo.Streams).SetOutput(output).SetOutputFormat(Format.mp4).Start();
+                        await FFmpeg.Conversions.New().AddStream(mediaInfo.Streams)
+                            .AddParameter("-threads 16")
+                            .AddParameter("-ac 2")
+                            .AddParameter("-c:v h264_nvenc")
+                            .SetOutput(output).SetOutputFormat(Format.mp4).Start();
                     }
 
-                    return new EpisodeFileModel
-                    {
-                        Model = film,
-                        Path = output
-                    };
+                    returnModel.Path = output;//В случае конвертации нужен путь не до файла, а до его сконвертированное версии в папке tmp
                 }
 
-                return new EpisodeFileModel
-                {
-                    Model = film,
-                    Path = film.Path
-                };
+                returnModel.Next = _seriesLogic.GetNextEpisode(new EpisodeSearchModel { Id = episode.Id }); 
+                if (returnModel.Next != null)//Для следующего эпизода сложнее, ибо есть маркер его готовности. Иначе будут ошибки(плохо)
+                    returnModel.HasNext = Path.GetExtension(returnModel.Next.Path) == ".mp4" || File.Exists($"{FileSystemSingletoneModel.Instance().tmpDirPath}\\{returnModel.Next.Id}.mp4");
+
+                return returnModel;
             }
             _logger.LogWarning("Episode not found.");
             return null;

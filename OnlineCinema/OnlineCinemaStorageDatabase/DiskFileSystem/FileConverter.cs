@@ -69,6 +69,9 @@ namespace OnlineCinemaStorageDatabase.DiskFileSystem
                     newfilm.Tags.Add("видео");
                     newfilm.Tags.Add("private");
                 }
+                newfilm.PosterPath = Directory.GetFiles(model.posterDir, $"{film.Name}.*").FirstOrDefault(model.defaultImg);
+                newfilm.BackgroundPath = Directory.GetFiles(model.bacgroundDir, $"{film.Name}.*").FirstOrDefault(model.defaultImg);
+
                 MongoDBSingleton.Instance().Films.InsertOne(newfilm);
             }
             else
@@ -112,7 +115,6 @@ namespace OnlineCinemaStorageDatabase.DiskFileSystem
                     series.Path = newSeries.Path;
                     series.mIndex = ElementStatus.Updated;
                 }
-
                 series.mIndex= ElementStatus.Active;
             }
             else

@@ -53,6 +53,9 @@ a,
   .mw-md-90{
     max-width: 90%!important; 
   }
+  .p-md-2{
+    padding: .5rem !important; 
+  }
 }
 
 

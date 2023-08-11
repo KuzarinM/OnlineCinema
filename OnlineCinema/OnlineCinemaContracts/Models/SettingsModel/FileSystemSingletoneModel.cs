@@ -42,7 +42,8 @@ namespace OnlineCinemaContracts.Models.SettingsModel
         public List<string> whiteSeasonList = new()
             {
                 "сезон",
-                "диск"
+                "диск",
+                "ИС"
             };
 
         public List<string> blackExtensionList = new()

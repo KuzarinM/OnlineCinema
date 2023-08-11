@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "vite --host 192.168.0.102 --port 8080" ,
+    "dev": "vite --host 100.75.31.252 --port 8080" ,
     "build": "vite build",
     "preview": "vite preview"
   },

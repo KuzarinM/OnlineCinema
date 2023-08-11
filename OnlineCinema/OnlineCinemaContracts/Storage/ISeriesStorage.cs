@@ -17,6 +17,8 @@ namespace OnlineCinemaContracts.Storage
 
         SeriesViewModel? GetElement(SeriesSearchModel model);
 
+        SeriesViewModel? GetElement(EpisodeSearchModel model);
+
         SeriesViewModel? Insert(SeriesBindingModel model);
 
         SeriesViewModel? Update(SeriesBindingModel model);
