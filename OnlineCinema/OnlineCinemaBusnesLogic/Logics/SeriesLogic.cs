@@ -99,7 +99,8 @@ namespace OnlineCinemaBusnesLogic.Logics
             index = series.Seasons.FindIndex(x => x.Id == season.Id);
             if (index - 1 >= 0)
             {
-                return (series.Seasons[index - 1] as SeasonViewModel)?.Episodes[0] as EpisodeViewModel;
+                var tmp = (series.Seasons[index - 1] as SeasonViewModel);
+                return tmp?.Episodes[tmp.Episodes.Count-1] as EpisodeViewModel;
             }
             return null;
         }

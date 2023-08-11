@@ -79,10 +79,10 @@
 				Подготовить следующую серию
 			</button>
 			<div id="prepare_next_wait" class="d-grid gap-2 psevdo-btn psevdo-btn-warning align-items-center hide">
-				<p class="text-center text-light">Подготовка следующей серии</p>
+				<p class="text-center text-light my-auto">Подготовка следующей серии</p>
 			</div>
 			<div id="prepare_next_text" class="d-grid gap-2 psevdo-btn align-items-center hide">
-				<p class="text-center text-light">Следующая серия сконвертированна</p>
+				<p class="text-center text-light my-auto">Следующая серия готова</p>
 			</div>
 		</div>
 
