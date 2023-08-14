@@ -87,6 +87,11 @@ namespace OnlineCinemaStorageDatabase.DiskFileSystem
                     flag = true;
                     film.Extention = newfilm.Extention;
                 }
+                if (film.Path != newfilm.Path)
+                {
+                    flag = true;
+                    film.Path = newfilm.Path;
+                }
                 string defaultPath = Directory.GetFiles(model.posterDir, $"{film.Name}.*").FirstOrDefault(model.defaultImg);
                 if (film.PosterPath.IsNullOrEmpty() || film.PosterPath != defaultPath) 
                 {
