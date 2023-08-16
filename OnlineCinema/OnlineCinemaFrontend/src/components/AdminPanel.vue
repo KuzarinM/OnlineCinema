@@ -29,6 +29,7 @@
 			},
 			async getTMPData(){
 				this.tmpList = await this.apiRequestJson("GET",`${this.url}/tmpGet`)
+				console.log(this.tmpList)
 			}
 		},
 		mounted(){
@@ -77,6 +78,10 @@
 									<td>{{ item.type }}</td>
 									<td>{{ item.name.replaceAll("."," ").replaceAll("_"," ") }}</td>
 									<td>{{ item.size.toFixed(2) }} Мб.</td>
+								</tr>
+								<tr v-if="this.tmpList!=null && this.tmpList.length > 0">
+									<td colspan="2">Итого: </td>
+									<td>{{ (this.tmpList.reduce((s,i)=>s+i.size,0)/1024).toFixed(2)}} Гб.</td>
 								</tr>
 							</tbody>
 						</table>
