@@ -7,12 +7,6 @@ using OnlineCinemaContracts.Models.SearchModels;
 using OnlineCinemaContracts.Models.SettingsModel;
 using OnlineCinemaContracts.Models.ViewModels;
 using OnlineCinemaContracts.Storage;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Resources;
-using System.Text;
-using System.Threading.Tasks;
 using Xabe.FFmpeg;
 
 namespace OnlineCinemaBusnesLogic.Logics
@@ -121,7 +115,7 @@ namespace OnlineCinemaBusnesLogic.Logics
 
                 if (Path.GetExtension(episode.Path) != ".mp4")//Файл не в mp4 -> конвертируем
                 {
-                    string output = Path.Combine(FileSystemSingletoneModel.Instance().tmpDirPath,$"{episode.Id}.mp4");
+                    string output = Path.Combine(FileSystemSingletoneModel.Instance().tmpDirPath, $"{episode.Id}.mp4");
 
                     if (!File.Exists(output))
                     {
@@ -139,7 +133,7 @@ namespace OnlineCinemaBusnesLogic.Logics
                     returnModel.Path = output;//В случае конвертации нужен путь не до файла, а до его сконвертированное версии в папке tmp
                 }
 
-                returnModel.Next = _seriesLogic.GetNextEpisode(new EpisodeSearchModel { Id = episode.Id }); 
+                returnModel.Next = _seriesLogic.GetNextEpisode(new EpisodeSearchModel { Id = episode.Id });
                 if (returnModel.Next != null)//Для следующего эпизода сложнее, ибо есть маркер его готовности. Иначе будут ошибки(плохо)
                     returnModel.HasNext = Path.GetExtension(returnModel.Next.Path) == ".mp4" || File.Exists($"{FileSystemSingletoneModel.Instance().tmpDirPath}\\{returnModel.Next.Id}.mp4");
 
@@ -148,7 +142,7 @@ namespace OnlineCinemaBusnesLogic.Logics
             _logger.LogWarning("Episode not found.");
             return null;
         }
- 
+
         private void CheckModel(EpisodeBindingModel model)
         {
             if (model == null)

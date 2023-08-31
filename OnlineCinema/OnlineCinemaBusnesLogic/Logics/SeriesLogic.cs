@@ -5,11 +5,6 @@ using OnlineCinemaContracts.Models.BindingModels;
 using OnlineCinemaContracts.Models.SearchModels;
 using OnlineCinemaContracts.Models.ViewModels;
 using OnlineCinemaContracts.Storage;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OnlineCinemaBusnesLogic.Logics
 {
@@ -58,23 +53,23 @@ namespace OnlineCinemaBusnesLogic.Logics
             return Series;
         }
 
-        public EpisodeViewModel? GetNextEpisode(EpisodeSearchModel? model) 
+        public EpisodeViewModel? GetNextEpisode(EpisodeSearchModel? model)
         {
             if (model == null) return null;
 
             var episode = _episodeStorage.GetElement(model);
             if (episode == null) return null;
-            var season = _seasonStorage.GetElement(new SeasonSearchModel { Id = episode.SeasonId});
+            var season = _seasonStorage.GetElement(new SeasonSearchModel { Id = episode.SeasonId });
             if (season == null) return null;
             var series = _seriesStorage.GetElement(new SeriesSearchModel { Id = season.SeriesId });
             if (series == null) return null;
-            int index = season.Episodes.FindIndex(x=>x.Id == episode.Id);
+            int index = season.Episodes.FindIndex(x => x.Id == episode.Id);
             if (index + 1 < season.Episodes.Count)
             {
                 return season.Episodes[index + 1] as EpisodeViewModel;
             }
             index = series.Seasons.FindIndex(x => x.Id == season.Id);
-            if(index +1 < series.Seasons.Count)
+            if (index + 1 < series.Seasons.Count)
             {
                 return (series.Seasons[index + 1] as SeasonViewModel)?.Episodes[0] as EpisodeViewModel;
             }
@@ -100,7 +95,7 @@ namespace OnlineCinemaBusnesLogic.Logics
             if (index - 1 >= 0)
             {
                 var tmp = (series.Seasons[index - 1] as SeasonViewModel);
-                return tmp?.Episodes[tmp.Episodes.Count-1] as EpisodeViewModel;
+                return tmp?.Episodes[tmp.Episodes.Count - 1] as EpisodeViewModel;
             }
             return null;
         }

@@ -7,14 +7,7 @@ using OnlineCinemaContracts.Models.SearchModels;
 using OnlineCinemaContracts.Models.SettingsModel;
 using OnlineCinemaContracts.Models.ViewModels;
 using OnlineCinemaContracts.Storage;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.IO.Compression;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OnlineCinemaBusnesLogic.Logics
 {
@@ -121,7 +114,7 @@ namespace OnlineCinemaBusnesLogic.Logics
                         {
                             foreach (var item in season.Episodes)
                             {
-                                await Task.Run(()=> { archive.CreateEntryFromFile(item.Path, $"{item.Name}.mp4"); });
+                                await Task.Run(() => { archive.CreateEntryFromFile(item.Path, $"{item.Name}.mp4"); });
                             }
                         }
                     });
@@ -135,7 +128,7 @@ namespace OnlineCinemaBusnesLogic.Logics
             }
 
             return null;
-        } 
+        }
 
         public async Task<SeasonFileModel?> GetConvertedSeasonFolder(SeasonSearchModel model)
         {

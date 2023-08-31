@@ -2,14 +2,7 @@
 using OnlineCinemaContracts.Logic;
 using OnlineCinemaContracts.Models.FileModel;
 using OnlineCinemaContracts.Models.SettingsModel;
-using OnlineCinemaContracts.Models.ViewModels;
 using OnlineCinemaContracts.Storage;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OnlineCinemaBusnesLogic.Logics
 {
@@ -61,10 +54,10 @@ namespace OnlineCinemaBusnesLogic.Logics
                 FileViewModel tmp = null;
 
                 var episode = _episodeStorage.GetElement(new() { Id = id });
-                if(episode == null)
+                if (episode == null)
                 {
                     var film = _filmStorage.GetElement(new() { Id = id });
-                    if(film != null)
+                    if (film != null)
                     {
                         tmp = new()
                         {
@@ -120,7 +113,7 @@ namespace OnlineCinemaBusnesLogic.Logics
                 Login = "admin",
                 Password = null
             });
-            if(admin == null)
+            if (admin == null)
             {
                 _userLogic.Create(new()
                 {
